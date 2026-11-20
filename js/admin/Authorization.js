@@ -41,11 +41,14 @@ document.querySelector("#" + moduleName).onload = async function () {
   });
   const dropdown = document.querySelector("#dropdown");
   dropdown.addEventListener("click", (e) => actionClick(e));
-  setTimeout(() => {
-    const script = document.createElement("script");
-    script.src = "https://www.google.com/recaptcha/enterprise.js?render=" + captchaSitekey;
-    document.body.appendChild(script);
-  }, 1500);
+  if (captchaSitekey) {
+    setTimeout(() => {
+      const script = document.createElement("script");
+      //script.src = "https://google.com" + captchaSitekey;
+      script.src = "https://www.google.com/recaptcha/enterprise.js?render=" + captchaSitekey;
+      document.body.appendChild(script);
+    }, 1500);
+  }
   await translateAndShow(pageName);
 };
 
@@ -85,32 +88,44 @@ const getPassword = async (token) => {
 
 document.querySelector("#blocklogin1").addEventListener("submit", (event) => {
   event.preventDefault();
-  window.grecaptcha.enterprise.ready(async () => {
-    const token = await window.grecaptcha.enterprise.execute(captchaSitekey, {
-      action: "LOGIN",
+  if (captchaSitekey) {
+    window.grecaptcha.enterprise.ready(async () => {
+      const token = await window.grecaptcha.enterprise.execute(captchaSitekey, {
+        action: "LOGIN",
+      });
+      getPassword(token);
     });
-    getPassword(token);
-  });
+  } else {
+    getPassword("");
+  }
 });
+
+const sendAuthorization = async (token) => {
+  const data = {
+    action: "user/setAuthorization",
+    captcha: token,
+    email: document.querySelector("#email").value,
+    code: document.querySelector("#code").value,
+  };
+  const loadingPromises = [api.send(data, "/src/GatewayPublicData.php")];
+  if (!(await api.safeLoad(loadingPromises))) return;
+  location.reload();
+};
 
 document.querySelector("#blocklogin2").addEventListener("submit", (event) => {
   event.preventDefault();
   const btn = event.submitter;
   if (btn.id === "buttonSetAuthorization") {
-    window.grecaptcha.enterprise.ready(async () => {
-      const token = await window.grecaptcha.enterprise.execute(captchaSitekey, {
-        action: "LOGIN",
+    if (captchaSitekey) {
+      window.grecaptcha.enterprise.ready(async () => {
+        const token = await window.grecaptcha.enterprise.execute(captchaSitekey, {
+          action: "LOGIN",
+        });
+        sendAuthorization(token);
       });
-      const data = {
-        action: "user/setAuthorization",
-        captcha: token,
-        email: document.querySelector("#email").value,
-        code: document.querySelector("#code").value,
-      };
-      const loadingPromises = [api.send(data, "/src/GatewayPublicData.php")];
-      if (!(await api.safeLoad(loadingPromises))) return;
-      location.reload();
-    });
+    } else {
+      sendAuthorization("");
+    }
   } else if (btn.id === "buttonPasswordReceived") {
     document.querySelector("#blocklogin1").classList.remove("login-block-hidden");
     document.querySelector("#blocklogin2").classList.add("login-block-hidden");

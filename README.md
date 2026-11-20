@@ -34,7 +34,7 @@ sudo systemctl enable --now apache2 mysql
 # Перейти у робочу директорію вебсервера та клонувати проєкт
 # Navigate to the web server directory and clone the project
 cd /var/www
-git clone https://github.com camsboard
+git clone https://github.com/ruslan-savvin/camsboard
 cd /var/www/camsboard
 ```
 
@@ -112,4 +112,143 @@ sudo chown -R www-data:www-data /var/www/camsboard
 sudo cp /var/www/camsboard/deploy/sudoers.camsboard /etc/sudoers.d/camsboard
 sudo chmod 0440 /etc/sudoers.d/camsboard
 sudo visudo -c
+```
+
+### 10. Встановлення FFmpeg / Install FFmpeg
+
+```bash
+# Встановити FFmpeg для роботи з відеопотоками
+# Install FFmpeg for video stream processing
+sudo apt install -y ffmpeg
+ffmpeg -version
+```
+
+### 11. Налаштування вебсервера Apache / Configure Apache Web Server
+
+```bash
+# Створити та відкрити файл конфігурації віртуального хоста
+# Create and open the virtual host configuration file
+sudo nano /etc/apache2/sites-available/camsboard.conf
+```
+
+```apache
+# Вставити конфігурацію віртуального хоста у файл
+# Paste the virtual host configuration into the file
+<VirtualHost *:80>
+    ServerName _
+    DocumentRoot /var/www/camsboard
+
+    <Directory /var/www/camsboard>
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/camsboard_error.log
+    CustomLog ${APACHE_LOG_DIR}/camsboard_access.log combined
+</VirtualHost>
+```
+
+```bash
+# Увімкнути сайт, вимкнути стандартну заглушку та перезапустити Apache
+# Enable the site, disable the default page, and restart Apache
+sudo a2dissite 000-default.conf
+sudo a2ensite camsboard.conf
+sudo systemctl restart apache2
+```
+
+### 12. Налаштування SSL-сертифіката (HTTPS) / Configure SSL Certificate (HTTPS)
+
+```bash
+# Варіант А: Швидкий самопідписаний сертифікат (для роботи по IP-адресі)
+# Примітка: Браузер покаже попередження безпеки — натисніть "Додатково" -> "Прийняти ризик і продовжити"
+# Option A: Quick self-signed certificate (for IP address access)
+# Note: Browser will show a security warning — click "Advanced" -> "Accept the Risk and Continue"
+sudo a2enmod ssl
+sudo a2ensite default-ssl
+sudo sed -i 's|/var/www/html|/var/www/camsboard|g' /etc/apache2/sites-available/default-ssl.conf
+sudo systemctl restart apache2
+
+# Варіант Б: Безкоштовний SSL-сертифікат Let's Encrypt (якщо є домен)
+# Option B: Free Let's Encrypt SSL certificate (if a domain name is used)
+sudo apt install -y certbot python3-certbot-apache
+sudo certbot --apache -d your-domain.com
+```
+
+### 13. Встановлення MediaMTX / Install MediaMTX
+
+```bash
+sudo mkdir -p /opt/mediamtx && cd /opt/mediamtx
+domain="github.com"
+author="bluenviron"
+project="mediamtx"
+version="v1.21.3"
+file="mediamtx_v1.21.3_linux_amd64.tar.gz"
+sudo wget "https://$domain/$author/$project/releases/download/$version/$file"
+sudo tar -xzf "$file" && sudo rm -f "$file"
+
+
+# Створити та відкрити файл системної служби systemd
+# Create and open the systemd service file
+sudo nano /etc/systemd/system/mediamtx.service
+```
+
+````ini
+[Unit]
+Description=MediaMTX Media Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/opt/mediamtx/mediamtx /opt/mediamtx/mediamtx.yml
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+nano /opt/mediamtx/mediamtx.yml
+```yaml
+# Варіант А: Для тестового сервера без домену (самопідписаний сертифікат)
+# Примітка: Перейдіть у браузері на https://IP_СЕРВЕРА:8889 та підтвердіть сертифікат
+# Option A: For test server without domain (self-signed certificate)
+# Note: Open https://SERVER_IP:8889 in browser and accept the certificate warning
+webrtcEncryption: yes
+webrtcServerKey: /etc/ssl/private/ssl-cert-snakeoil.key
+webrtcServerCert: /etc/ssl/certs/ssl-cert-snakeoil.pem
+
+
+# Варіант Б: Для продакшен-сервера з доменом Let's Encrypt
+# Option B: For production server with Let's Encrypt domain
+# webrtcEncryption: yes
+# webrtcServerKey: /etc/letsencrypt/live/dvr.greatapart.com/privkey.pem
+# webrtcServerCert: /etc/letsencrypt/live/dvr.greatapart.com/fullchain.pem
+````
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now mediamtx
+sudo systemctl status mediamtx
+
+```
+
+### 14. Налаштування фаєрволу (UFW) / Configure Firewall (UFW)
+
+```bash
+# Дозволити SSH, вебсервер (HTTP/HTTPS) та медіасервер MediaMTX (RTMP, RTSP, WebRTC)
+# Allow SSH, web server (HTTP/HTTPS), and MediaMTX media server (RTMP, RTSP, WebRTC)
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 1935/tcp
+sudo ufw allow 8554/tcp
+sudo ufw allow 8889/tcp
+sudo ufw allow 8189/udp
+
+# Увімкнути фаєрвол та перевірити активні правила
+# Enable firewall and check active rules
+sudo ufw --force enable
+sudo ufw status
 ```
