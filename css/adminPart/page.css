@@ -1,0 +1,73 @@
+/*Savvin Ruslan 2025*/
+.page
+{
+	position: absolute;
+	top: calc(var(--header-h) + var(--main-gap));
+	bottom: var(--main-gap);
+	overflow-y: auto;
+	box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+	background-color: var(--page-bg);
+	border-radius: var(--page-radius);
+	border: 0;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	text-align: center;
+	transition: transform calc(var(--transition-time) * 2);
+	container-type: inline-size;
+	gap: var(--main-gap);	
+	padding: 0 var(--main-gap);
+	border-top: var(--main-gap) solid transparent;
+	border-bottom: var(--main-gap) solid transparent;
+}
+
+.page:has(.table-display-grid-is-pinned) {
+    overflow-y: hidden; 
+}
+
+.page-left{
+	left: var(--main-gap);
+    width: var(--page-calendar-max-width);	
+}	
+
+.page-right{
+	left: calc(var(--page-calendar-max-width) + (var(--main-gap) * 2)); 
+    right: var(--main-gap);
+    width: auto;	
+ }
+
+.page-hidden{	
+	transform: translateX(100vw);
+}
+
+.page-header{
+	font-size: var(--font-size-page-header);
+	font-family: "Roboto", sans-serif;
+    font-weight: var(--font-weight-page-header);
+    font-style: normal;
+}
+
+@media (max-width: 990px) {
+	.page-left, .page-right{
+		left: var(--main-gap);
+		right: var(--main-gap);
+		margin-left: auto;
+		margin-right: auto;
+		width: auto;
+		max-width: var(--page-calendar-max-width);
+	}
+}
+
+.page-fields {
+    display: grid;         
+    grid-template-columns: 1fr;
+    gap: 1rem;             
+    padding-bottom: 30px;  
+}
+
+
+.page-headers-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

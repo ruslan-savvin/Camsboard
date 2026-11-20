@@ -1,0 +1,23 @@
+# Секрети та конфігурація / Secrets & Config
+.env
+config/*
+!config/.gitkeep
+!config/*.example.json
+
+# Залежності PHP та Python / Dependencies
+/vendor/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+
+# Важкі моделі нейромереж / Heavy AI Models
+*.onnx
+*.pt
+
+# Логи та тимчасові робочі файли / Logs & Storage
+/log/*
+!/log/.gitkeep
+/storage/*
+!/storage/.gitkeep
+*.log

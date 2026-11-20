@@ -1,0 +1,81 @@
+.container-card{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--main-gap);
+    padding: var(--main-gap);
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;    
+}
+
+.card-table-cell{
+    flex: 0 1 20rem;    
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;    
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    gap: calc(var(--main-gap)/2);
+    padding: calc(var(--main-gap)/2);
+}
+
+.card-table-cell img {
+    margin-top: auto;    
+    width: 100%;
+    height: auto;
+    /*aspect-ratio: 3 / 2; */
+}
+
+.table-cell-image {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.table-cell-image img {
+    margin-left: 0;
+    max-height: 10rem;
+    object-fit: contain;
+    margin: 0.5rem 0;
+}
+
+/*.card-table-title-text{
+	font-size: var(--font-size-page-header);
+	font-family: "Roboto", sans-serif;
+	font-weight: var(--font-weight-page-header);
+	font-style: normal;    
+}*/
+.card-table-title-text {
+	font-size: var(--font-size-page-header);
+	font-family: "Roboto", sans-serif;
+	font-weight: var(--font-weight-page-header);
+	font-style: normal;    
+	
+	/* --- НОВІ СТИЛІ ДЛЯ РОЗДІЛЕННЯ ЯЧЕЙОК --- */
+	display: block;              /* Робимо заголовок блоком, щоб перенести дані під нього */
+	margin-top: 16px;            /* Створює відступ ЗВЕРХУ (відділяє від попередньої комірки) */
+	margin-bottom: 4px;          /* Створює невеликий відступ ДО самих даних знизу */
+	padding-bottom: 4px;         /* Місце для лінії */
+	border-bottom: 1px dashed #e2e8f0; /* Тонка пунктирна лінія під заголовком для візуального розділення */
+	color: #4a5568;              /* Робимо заголовок трохи контрастнішим */
+}
+
+
+@media (max-width: 990px) {
+    .container-card{
+        gap: 0;
+        padding: 0;        
+    }    
+    .card-table-cell {        
+        flex: 1 1 100%;
+        gap: 0;
+        padding: 0;
+        padding-top: var(--main-gap);
+    }
+    .card-table-cell img {
+        padding-top: var(--main-gap);
+    }    
+}
+
+

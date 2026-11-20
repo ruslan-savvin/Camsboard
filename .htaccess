@@ -1,0 +1,26 @@
+Options -Indexes
+
+RewriteEngine On
+RewriteBase /
+
+RewriteRule \.(txt|log)$ - [F,L]
+
+RewriteRule ^(storage|config|vendor|venv)/ - [F,L]
+
+
+RewriteCond %{REQUEST_URI} !/GatewayAuthorizedData\.php$ [NC]
+RewriteCond %{REQUEST_URI} !/GatewayPublicData\.php$ [NC]
+RewriteCond %{REQUEST_URI} !/admin\.php$ [NC]
+
+RewriteRule \.php$ - [F,L]
+
+RewriteCond %{REQUEST_URI} ^/(css|js) [NC]
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+<FilesMatch "^\.|\.(htpasswd|htaccess|env|json|lock)$">
+    Require all denied
+</FilesMatch>

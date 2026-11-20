@@ -1,0 +1,110 @@
+/*Savvin Ruslan*/
+:root
+{
+	--dark: #373737;
+	--light: #FFFFFF;
+	--dedicated: #1A237E;
+}
+
+.container-calendar
+{
+	overflow-y: auto;
+}
+
+.container-calendar-month
+{
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: auto;
+	grid-auto-rows: minmax(4rem, auto);
+	margin-top: 0.5rem;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+	font-family: "Roboto", sans-serif;
+	font-size: var(--font-size-legend);
+	font-weight: 400;
+	font-style: normal;
+}
+
+.container-calendar-dark-theme
+{
+	border-top: 1px solid var(--light);
+	border-left: 1px solid var(--light);
+}
+
+.container-calendar-light-theme
+{
+	border-top: 1px solid var(--dark);
+	border-left: 1px solid var(--dark);
+}
+
+.calendar-month-cell
+{
+	grid-column: 1/8;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: var(--main-gap) var(--main-gap);
+	font-weight: 500;
+}
+
+.calendar-week-cell
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.calendar-day-cell
+{
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	flex-direction: column;
+	gap: 2px;
+	padding: 3px;
+}
+
+.calendar-micro-cell
+{
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	flex-direction: column;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.calendar-font-style-italic
+{
+	font-size: var(--font-size-mini);
+	font-weight: 400;
+	font-style: italic;
+}
+
+.calendar-dark-theme
+{
+	background-color: var(--dark);
+	border-bottom: 1px solid var(--light);
+	border-right: 1px solid var(--light);
+}
+
+.calendar-light-theme
+{
+	background-color: var(--light);
+	border-bottom: 1px solid var(--dark);
+	border-right: 1px solid var(--dark);
+}
+
+.calendar-dedicated-theme
+{
+	background-color: var(--dedicated);
+	border-bottom: 1px solid var(--light);
+	border-right: 1px solid var(--light);
+}

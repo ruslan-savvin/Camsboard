@@ -1,0 +1,16 @@
+{
+    "name": "camsboard/project",
+    "description": "CamsBoard main application",
+    "type": "project",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.8",
+        "phpmailer/phpmailer": "^7.2",
+        "google/cloud-recaptcha-enterprise": "^2.6"
+    }
+}

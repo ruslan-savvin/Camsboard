@@ -1,0 +1,71 @@
+/*Savvin Ruslan 2025*/
+:root {
+    /*@media (max-width: 990px) 
+    /css/adminPart/
+    page.css
+    navbar.css
+    select.css
+    button.css
+    card.css
+    /js/admin/localization-management-module.js*/
+    --media-max-width: 990;
+    --page-calendar-max-width: 25rem;
+    --main-gap: 0.75rem;
+    --header-h: 3rem;
+    --nav-item-h: 2.5rem;
+
+    /*Nav*/
+    /*--background-color-hover: #a9a6a6;*/
+    --background-color-hover: #f2c268;
+    --background-color-nav:  #e6e7e7;
+    --background-color-step: 10;
+    --background-color-btn: #b7b7b7;
+    --font-size-nav: var(--clamp1);
+    --min-width-nav: 12rem;
+    --transition-time: 0.5s;
+
+    /*page*/
+    --page-bg: #ddd;
+    --page-radius: 0.5rem;
+    --transition-speed: 1s;
+    --font-size-page-header: var(--clamp2);
+    --font-weight-page-header: 500;
+
+    /*table*/
+    --table-header-color: #90b5bb;
+    --table-cell-light: #ffffff;
+    --table-cell-dark: #dfe7eb;
+    --table-cell-hover: #bbcdef;
+    --table-button-color: #b8bac7;
+    --tab-bg: #ffffff;
+    --font-size-table-cell: var(--clamp1);
+    --font-weight-table: 400;
+    
+    /*button*/
+    --table-button-background-color: rgba(244, 181, 61, 0.84);
+    --btn-background-color: rgb(55 55 55);
+
+    /*input*/
+    --font-size-input: var(--clamp1);
+    --font-size-legend: var(--clamp2);
+    --font-weight-legend: 400;
+
+
+    /*scrollbar*/
+    --scrollbar-color: #a7a5a5;
+
+    /*calendar*/
+    --font-size-mini: var(--clamp0);
+    --line-height1: 1.4;
+    --clamp0: clamp(0.625rem, 1.2vw, 0.875rem);
+    --clamp1: clamp(0.75rem, 1.5vw, 1rem);
+    --clamp2: clamp(1rem, 2vw, 1.125rem);
+    --clamp3: clamp(1.25rem, 3vw, 1.75rem);
+    --clamp4: clamp(1.5rem, 4vw, 2.5rem);
+    --clamp5: clamp(2rem, 6vw, 4rem);
+    /* --clamp1: Подписи, мелкие ячейки таблиц, футер  (12px → 16px) */
+    /* --clamp2: Основной текст (Body), стандартные кнопки, навигация (16px → 18px) — небольшой рост для комфортного чтения */
+    /* --clamp3: Заголовки H3, карточки товаров  (20px → 28px) */
+    /* --clamp4: Заголовки H2, акцентные фразы (24px → 40px) */
+    /* --clamp5: Главный заголовок H1, Hero-секции  (32px → 64px) */
+}

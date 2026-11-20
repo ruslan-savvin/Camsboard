@@ -1,0 +1,97 @@
+.container-modal-window{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(78,87,84,0.5);
+    z-index: 7777;
+}
+
+.modal-window {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: calc(50% + var(--header-h) / 2);
+    left: 50%;    
+    width: 95%;
+    max-width: calc(var(--page-calendar-max-width) * 1.5);    
+    max-height: 80vh; 
+    background-color: #fff;
+    border-radius: 12px;
+    padding: calc(var(--main-gap)/2);    
+    overflow: hidden;
+    transform: translate(-50%, -50%);        
+     transition: 
+        transform var(--transition-time), 
+        opacity 0.3s ease-in-out, 
+        filter 0.3s ease-in-out;
+    z-index: 7778;    
+    
+}
+
+.modal-window-opacity{
+    opacity: 0;
+}
+
+.modal-window-header{
+    flex: 0 0 auto; 
+    padding: var(--main-gap);
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    border-bottom: 1px solid rgba(78,87,84,0.3);    
+    font-size: var(--font-size-page-header);
+	font-family: "Roboto", sans-serif;
+    font-weight: var(--font-weight-page-header);
+    font-style: normal;
+}
+
+.modal-window-body{
+    flex: 1 1 auto; 
+    overflow-y: auto; 
+    min-height: 0;    
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    gap: var(--main-gap);
+    border: var(--main-gap) solid transparent; 	
+    font-size: var(--font-size-table-cell);
+	font-family: "Roboto", sans-serif;
+    font-weight: var(--font-weight-table);
+    font-style: normal;
+    white-space: pre-line;
+}
+
+.modal-window-footer{    
+    flex: 0 0 auto; 
+    padding: var(--main-gap) var(--main-gap);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(78,87,84,0.3);
+    gap: var(--main-gap);
+}
+
+.modal-hidden-2{    
+    transform: translate(-50%, -150vh);
+}
+
+.modal-button-input-row{
+    display: flex;
+    align-items: center;
+    gap: var(--main-gap);
+}
+
+
+.modal-text-container {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-align: left;
+  line-height: 1.5;
+  font-size: 16px;
+  color: #333333;
+  padding: 15px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}

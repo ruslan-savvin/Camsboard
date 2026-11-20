@@ -1,0 +1,44 @@
+/*Savvin Ruslan*/
+.dropdown{
+   z-index: 7779; 
+}
+
+.dropdown-content {
+   position: absolute;
+   cursor: pointer;
+   background-color: var(--nav-bg);  
+   padding: var(--main-gap);   
+   gap: var(--main-gap);
+   color: black;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: flex;
+   align-items: center;
+   width: auto;
+   opacity: 0;   
+   transition: opacity var(--transition-time), background-color var(--transition-time);
+   font-size: var(--font-size-nav);
+   font-family: "Roboto", sans-serif;
+   font-weight: var(--font-weight-table);
+   font-style: normal;
+   line-height: var(--line-height1);   
+}
+
+.dropdown-content-nav {
+   opacity: 1;
+   right: 0;
+   left: 0;
+}   
+
+.dropdown-show {
+   opacity: 1;   
+}
+
+@media (min-width: 991px) {
+   .dropdown-content:hover {
+      background-color: var(--background-color-hover);            
+   }
+}
+

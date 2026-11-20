@@ -1,0 +1,97 @@
+/*Ruslan Savvin 2024*/
+.standard-btn {
+    background-color: var(--btn-background-color);
+    color: #fff;
+    border: 0;
+    border-radius: 0.5rem;
+    padding: calc(var(--main-gap) / 1.5) calc(var(--main-gap) / 1.5);    
+    width: 100%;
+    cursor: pointer;
+    font-size: var(--font-size-legend);
+	font-family: "Roboto", sans-serif;
+    font-weight: var(--font-weight-table);
+    font-style: normal;
+}
+
+.table-btn {
+    position: relative;
+    background-color: var(--background-color-btn);  
+    outline: 1px solid var(--background-color-btn);
+    outline-offset: 2px;  
+    border: 0;
+    aspect-ratio: 1 / 1;        
+    cursor: pointer;    
+    display: flex;
+    justify-content:center;
+    align-items: center;
+	width: clamp(32px, 8vw, 30px);    
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 16px 16px;	
+	font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    align-self: center;
+}
+
+.button-row-space-between{
+display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: calc(var(--main-gap) / 1.25);
+    flex-wrap: wrap;        
+}    
+
+.button-row-space-between .standard-btn {    
+    width: auto !important;         
+    flex: 1 1 0;     
+    white-space: nowrap;     
+    min-width: min-content; 
+}
+
+
+.table-btn-is-pinned {
+    background-color: #b5dc59 !important;
+    /* Повний оберт: іконка крутнеться, але кнопка залишиться квадратом */
+    transform: rotate(360deg) !important; 
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    
+    box-shadow: 0 0 0 2px #e3c148, inset 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.table-panel-header-button-sticky-background-image{
+    background-image: url("/images/icons/sticky.png");
+}
+
+.table-panel-header-button-settings-background-image
+{
+	background-image: url("/images/icons/settings.png");
+}
+
+.table-panel-header-button-cross-button-background-image
+{
+	background-image: url("/images/icons/cross-button.png");
+}
+
+.table-panel-header-button-search-background-image
+{
+	background-image: url("/images/icons/search.png");
+}
+
+.table-panel-header-button-filter-background-image
+{
+	background-image: url("/images/icons/filter.png");
+}
+
+@media (min-width: 991px) {
+    .table-btn:hover, 
+    .table-btn:focus, 
+    .standard-btn:hover, 
+    .standard-btn:focus {
+        background-color: var(--table-button-background-color);
+        color: black;
+        outline: 2px solid var(--table-button-background-color);
+        outline-offset: 2px;
+    }
+}    
+

@@ -1,0 +1,39 @@
+#sudo visudo -f /etc/sudoers.d/camsboard
+#After saving
+#sudo chmod 0440 /etc/sudoers.d/camsboard
+#sudo visudo -c
+
+
+
+# Manage individual camera services (start, stop, enable, disable, restart)
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl * camsboard_device-@*.service
+
+# Reload systemd configuration after template changes
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl daemon-reload
+
+# Create and overwrite camera service template and device env configs
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/camsboard_device-@.service
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/default/camsboard_device-*
+www-data ALL=(ALL) NOPASSWD: /usr/bin/rm -f /etc/default/camsboard_device-*
+
+# Manage YOLO detect service
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/camsboard_detect.service
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl * camsboard_detect.service
+
+# Manage task template and timers (cleaner, copier, detector, tester)
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/camsboard_timer@.service
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/cleaner.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/copier.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/detector.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/tester.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl * cleaner.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl * copier.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl * detector.timer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/systemctl * tester.timer
+
+
+
+
+
+
+
