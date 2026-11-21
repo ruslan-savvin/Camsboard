@@ -260,21 +260,12 @@ export class StructureReferences {
       5: {
         type: "text",
         width: "auto",
-        columnName: "table.users.col.role",
-        enumeration: { role: CommonData.enumRole },
-        nameFieldDatabase: ["role"],
-        editorFieldNames: { role: "table.users.editor.role" },
-        editorType: { role: "select" },
-      },
-      6: {
-        type: "text",
-        width: "auto",
         columnName: "Telegram",
         nameFieldDatabase: ["telegram"],
         editorFieldNames: { telegram: "Telegram" },
         editorType: { telegram: "input text" },
       },
-      7: {
+      6: {
         type: "text",
         width: "auto",
         columnName: "Viber",
@@ -282,7 +273,7 @@ export class StructureReferences {
         editorFieldNames: { viber: "Viber" },
         editorType: { viber: "input text" },
       },
-      8: {
+      7: {
         type: "text",
         width: "auto",
         columnName: "Email",
@@ -290,7 +281,7 @@ export class StructureReferences {
         editorFieldNames: { email: "Email" },
         editorType: { email: "input text" },
       },
-      9: {
+      8: {
         type: "text",
         width: "auto",
         columnName: "table.users.col.languageId",
