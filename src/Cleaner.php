@@ -7,7 +7,7 @@ use RecursiveDirectoryIterator;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-//date_default_timezone_set("Europe/Kyiv");
+
 try {
     cleanRecordsTemp();
     cleanEventIsHumanCheckedNo();
@@ -16,8 +16,8 @@ try {
     ReturnData::getInstance()->prepare($exception);
 }
 
-foreach (ReturnData::getInstance()->get()["message"] as $message) {
-    $data = is_array($message) ? $message[1] : $message; //THROW_EXCEPTION
+foreach (ReturnData::getInstance()->get()["message"] ?? [] as $message) {
+    $data = is_array($message) ? $message[1] : $message;
     $type = is_array($message) ? $message[0] : "";
 
     if ($type !== "exeption") {

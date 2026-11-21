@@ -12,13 +12,13 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     }
     throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
-//date_default_timezone_set("Europe/Kyiv");
+
 
 try {
     DataProvider::getInstance()->begin();
     (new Authorization())->checkSession(false);
     $data = json_decode(file_get_contents('php://input'), true) ?? $_POST;
-    $action = $data["action"];
+    $action = $data["action"] ?? null;
     $routes = [
         "reference/authorization/fetch"   => fn() => (new DataProcessor())->referenceAuthorizationFetch($data),
         "reference/devices/authorization/save" => fn() => (new DataProcessor())->referenceDevicesSave($data),
@@ -42,7 +42,6 @@ try {
 ob_clean();
 $typeHeader = ReturnData::getInstance()->getHeader();
 if ($typeHeader === "application/json") {
-    $a = ReturnData::getInstance()->get();
     echo json_encode(ReturnData::getInstance()->get(), JSON_UNESCAPED_UNICODE);
 } else if ($typeHeader === "text/html" || $typeHeader === "application/pdf") {
     echo ReturnData::getInstance()->get()["data"];

@@ -61,6 +61,8 @@ while (!feof(STDIN)) {
                     ]
                 ];
                 DataProvider::getInstance()->save($data);
+                exec("php /var/www/camsboard/src/Detector.php > /dev/null 2>&1 &");
+
                 $fotoCount = 0;
                 $isRecording = false;
             }

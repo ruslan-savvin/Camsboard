@@ -158,7 +158,15 @@ class DataProcessor
         $this->syncTimer('detector.timer', $timerDetector);
         $this->syncTimer('tester.timer', $timerTester);
 
+        $mes = "If issues occur, check the status of the following services:
+                sudo systemctl status camsboard_timer@Tester.service
+                sudo systemctl status detector.timer
+                sudo systemctl status copier.timer
+                sudo systemctl status cleaner.timer
+                sudo systemctl status tester.timer
 
+                sudo systemctl status camsboard_detect.service";
+        ReturnData::getInstance()->set($mes, ReturnType::MESSAGE, "⚠️ ", ReturnDirection::USER);
         ReturnData::getInstance()->set("message.system.save", ReturnType::MESSAGE, "✅ ", ReturnDirection::USER);
     }
 
@@ -239,6 +247,10 @@ class DataProcessor
 
             $this->runCmd("sudo /usr/bin/systemctl enable camsboard_device-@{$deviceId}.service");
             $this->runCmd("sudo /usr/bin/systemctl restart camsboard_device-@{$deviceId}.service");
+
+            $mes = "If issues occur, check the service status
+                sudo systemctl status camsboard_device-@{$deviceId}.service";
+            ReturnData::getInstance()->set($mes, ReturnType::MESSAGE, "⚠️ ", ReturnDirection::USER);
         }
     }
 
@@ -375,7 +387,7 @@ class DataProcessor
 
         $configFile = '/opt/mediamtx/mediamtx.yml';
 
-        $content = file_get_contents($configFile);
+        $content = @file_get_contents($configFile);
         if ($content === false) {
             ReturnData::getInstance()->set("Failed to read mediamtx.yml", ReturnType::THROW_EXCEPTION, "", ReturnDirection::USER);
         }
@@ -393,8 +405,13 @@ class DataProcessor
         }
 
 
-        if (file_put_contents($configFile, $baseConfig . "\n\n" . $newPaths) === false) {
-            ReturnData::getInstance()->set("Failed to write mediamtx.yml", ReturnType::THROW_EXCEPTION, "", ReturnDirection::USER);
+        if (@file_put_contents($configFile, $baseConfig . "\n\n" . $newPaths) === false) {
+            ReturnData::getInstance()->set("Failed to write mediamtx.yml", ReturnType::THROW_EXCEPTION, "❗ ", ReturnDirection::USER);
         }
+
+        $mes = "If issues occur, check the 
+                the paths: section in mediamtx.yml
+                sudo nano /opt/mediamtx/mediamtx.yml";
+        ReturnData::getInstance()->set($mes, ReturnType::MESSAGE, "⚠️ ", ReturnDirection::USER);
     }
 }
