@@ -45,7 +45,7 @@ class Authorization
             ],
             "tables" => ["cookies", "users"],
             "join" => "LEFT JOIN users ON cookies.userId = users.id",
-            "where" => "WHERE cookies.idCookies IN ('" . $idCookies . "') AND users.role = 2",
+            "where" => "WHERE cookies.idCookies IN ('" . $idCookies . "')",
         ];
         $records = DataProvider::getInstance()->read($data);
         if (!is_array($records) || count($records) === 0) {
@@ -72,10 +72,10 @@ class Authorization
         }
         $data["queryParams"] = [
             "select" => [
-                0 => ["action" => "+", "prefix" => "users", "columns" => "chatCod"]
+                0 => ["action" => "+", "prefix" => "users", "columns" => "telegram,viber,email"]
             ],
             "tables" => ["users"],
-            "where" => "WHERE users.token IN ('" . $token . "') AND users.role = 2",
+            "where" => "WHERE users.token IN ('" . $token . "')",
         ];
         $records = DataProvider::getInstance()->read($data);
         if (!is_array($records) || count($records) === 0) {
@@ -95,9 +95,9 @@ class Authorization
         }
 
 
-        $chatCod = json_decode($records[0]["chatCod"], true);
+
         $isSent = false;
-        $email = $chatCod["email"] ?? "";
+        $email = $records[0]["email"] ?? "";
         $pass = mt_rand(1000, 9999);
         $gf = new GeneralFunctions();
         if ($email !== "") {
@@ -110,12 +110,12 @@ class Authorization
             "queryData" => ["0" => ["changed" => 5, "token" => $token, "pass" => $pass]],
         ];
         DataProvider::getInstance()->save($dataTemp);
-        $telegramCod = $chatCod["telegram"] ?? "";
+        $telegramCod = $records[0]["telegram"] ?? "";
         if ($telegramCod !== "") {
             $dataTemp = ["message" => $pass, "telegramCod" => $telegramCod];
             $gf->sendTelegramMessage($dataTemp);
         }
-        $viberCod = $chatCod["viber"] ?? "";
+        $viberCod = $records[0]["viber"] ?? "";
         if ($viberCod !== "") {
             $dataTemp = ["message" => $pass, "viberCod" => $viberCod];
             $gf->sendViberMessage($dataTemp);

@@ -38,7 +38,7 @@ export class CommonData {
     dataRequest6.queryParams = {
       select: { 0: { action: "+", prefix: "users", columns: "*" }, 1: { columns: "CONCAT(users.name, ' ', users.surname) AS nameSurname" } },
       tables: ["users"],
-      where: "WHERE users.isDelete <> 1 AND users.role = 2",
+      where: "WHERE users.isDelete <> 1",
       buildMap: [["id"], ["nameSurname"]],
     };
 

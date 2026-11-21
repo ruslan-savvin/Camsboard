@@ -228,7 +228,7 @@ function sendTelegramMessage(string $mes, int $task)
 {
     $data["queryParams"] = [
         "select" => [
-            "0" => ["action" => "+", "prefix" => "users", "columns" => "chatCod"],
+            "0" => ["action" => "+", "prefix" => "users", "columns" => "telegram,viber,email"],
         ],
         "tables" => ["tasks", "users"],
         "join" => "LEFT JOIN users ON users.id = tasks.userId",
@@ -236,9 +236,9 @@ function sendTelegramMessage(string $mes, int $task)
     ];
     $records = DataProvider::getInstance()->read($data);
 
-    $chatCod = json_decode($records[0]["chatCod"], true);
+
     $gf = new GeneralFunctions();
-    $telegramCod = $chatCod["telegram"] ?? "";
+    $telegramCod = $records[0]["telegram"] ?? "";
     if ($telegramCod !== "") {
         $dataTemp = ["message" => $mes, "telegramCod" => $telegramCod];
         $gf->sendTelegramMessage($dataTemp);

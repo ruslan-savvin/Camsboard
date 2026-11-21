@@ -145,7 +145,7 @@ function sendTelegramMessage(string $imagePath, int $eventId, string $deviceName
 
     $data["queryParams"] = [
         "select" => [
-            "0" => ["action" => "+", "prefix" => "users", "columns" => "chatCod"],
+            "0" => ["action" => "+", "prefix" => "users", "columns" => "telegram,viber,email"],
         ],
         "tables" => ["tasks", "users"],
         "join" => "LEFT JOIN users ON users.id = tasks.userId",
@@ -153,15 +153,15 @@ function sendTelegramMessage(string $imagePath, int $eventId, string $deviceName
     ];
     $records = DataProvider::getInstance()->read($data);
 
-    $chatCod = json_decode($records[0]["chatCod"], true);
+
     $gf = new GeneralFunctions();
-    $telegramCod = $chatCod["telegram"] ?? "";
+    $telegramCod = $records[0]["telegram"] ?? "";
     if ($telegramCod !== "") {
         $dataTemp = ["message" => $file . " Event: " . $eventId . " Device: " . $deviceName . " " . $address, "telegramCod" => $telegramCod, "photo" => $imagePath];
         $gf->sendTelegramMessage($dataTemp);
     }
 
-    $viberCod = $chatCod["viber"] ?? "";
+    $viberCod = $records[0]["viber"] ?? "";
     if ($viberCod !== "") {
         $dataTemp = [
             "message"  => "Event: " . $eventId . " Device: " . $deviceName . " " . $address,

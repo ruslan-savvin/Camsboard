@@ -150,7 +150,7 @@ class GeneralFunctions
         $dataTemp = [];
         $dataTemp["queryParams"] = [
             "select" => [
-                "1" => ["action" => "+", "prefix" => "users", "columns" => "chatCod"],
+                "1" => ["action" => "+", "prefix" => "users", "columns" => "telegram,viber,email"],
                 "2" => ["action" => "+", "prefix" => "generalSettings", "columns" => "telegramBotIp,viberBotIp,viberSendName"],
             ],
             "tables" => ["users", "generalSettings"],
@@ -158,9 +158,9 @@ class GeneralFunctions
             "where" => "WHERE users.id IN ({$userId})"
         ];
         $records = DataProvider::getInstance()->read($dataTemp);
-        $chatCod = json_decode($records[0]["chatCod"], true);
+
         $isSent = false;
-        $email = $chatCod["email"] ?? "";
+        $email = $records[0]["email"] ?? "";
         if ($email !== "") {
             $dataTemp = [
                 "email" => $email,
@@ -178,13 +178,13 @@ class GeneralFunctions
         if (!$telegramBotIp && !$viberBotIp) {
             ReturnData::getInstance()->set("message.system.NoMessengersAvailableToSendMessage", ReturnType::THROW_EXCEPTION, "❗ ", ReturnDirection::USER);
         }
-        $telegramCod = $chatCod["telegram"] ?? "";
+        $telegramCod = $records[0]["telegram"] ?? "";
         if ($telegramCod !== "") {
             $dataTemp = ["telegramBotIp" => $telegramBotIp, "message" => $data["messageTelegram"], "telegramCod" => $telegramCod, "attachment" => $attachment];
             $this->sendTelegramMessage($dataTemp);
             $isSent = true;
         }
-        $viberCod = $chatCod["viber"] ?? "";
+        $viberCod = $records[0]["viber"] ?? "";
         if ($viberCod !== "") {
             $dataTemp = ["message" => $data["messageViber"],  "viberCod" => $viberCod, "attachment" => $attachment];
             $this->sendViberMessage($dataTemp);
