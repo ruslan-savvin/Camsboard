@@ -103,7 +103,6 @@ sudo visudo -c
 # Встановити FFmpeg для роботи з відеопотоками
 # Install FFmpeg for video stream processing
 sudo apt install -y ffmpeg
-ffmpeg -version
 ```
 
 ### 11. Налаштування вебсервера Apache / Configure Apache Web Server
@@ -161,6 +160,8 @@ sudo certbot --apache -d your-domain.com
 ### 13. Встановлення MediaMTX / Install MediaMTX
 
 ```bash
+# Скопіюйте весь блок команд, вставте його в термінал і натисніть Enter.
+# Copy the entire block of commands, paste it into the terminal, and press Enter.
 sudo mkdir -p /opt/mediamtx && cd /opt/mediamtx
 domain="github.com"
 author="bluenviron"
@@ -252,3 +253,18 @@ sudo ufw allow 8189/udp
 sudo ufw --force enable
 sudo ufw status
 ```
+
+### 15. Первинне налаштування в адмін-панелі / Initial Admin Panel Configuration
+
+1. Відкрийте у браузері адмін-панель: `https://your-domain.com/admin.php` _(або замініть `your-domain.com` на IP-адресу сервера)_ та увійдіть, використовуючи облікові дані з пункту 3. / Open the admin panel in your browser: `https://your-domain.com/admin.php` _(or replace `your-domain.com` with your server's IP address)_ and log in using the credentials from Step 3.
+2. Перейдіть до розділу **Меню -> Налаштування** та заповніть усі порожні поля вводу відповідно до параметрів вашого сервера. / Go to **Menu -> Settings** and fill in all empty input fields according to your server configuration.
+3. Перейдіть до розділу **Меню -> Довідники** та додайте новий **Stream key** _(вкажіть довільний набір символів без пробілів)_. / Go to **Menu -> Reference** and add a new **Stream key** _(enter any random string of characters without spaces)_.
+4. Налаштуйте вашу камеру або програму для трансляції для передачі відеопотоку на сервер за адресою: / Configure your camera or streaming software to push the video stream to the server using the following URL:
+
+   ```text
+   rtmp://your-domain.com:1935/Stream_key
+   ```
+
+   _(замініть `your-domain.com` на ваш домен або IP-адресу, а `Stream_key` — на створений ключ)_. / _(replace `your-domain.com` with your domain or IP address, and `Stream_key` with your created key)_.
+
+5. **Важливо (для самопідписаних SSL-сертифікатів):** якщо ви використовуєте самопідписані ключі, вікно перегляду відео буде заблоковане попередженням безпеки браузера. Для розблокування відкрийте нову вкладку в браузері, перейдіть за адресою `https://your-domain.com:8889/Stream_key` _(де `your-domain.com` — ваш домен або IP-адреса)_ та підтвердіть довіру до сертифіката (натисніть **Додатково -> Перейти на сайт**), після чого оновіть основну сторінку. / **Important (for self-signed SSL certificates):** If you are using self-signed certificates, the video player window will be blocked by a browser security warning. To unblock it, open a new browser tab, navigate to `https://your-domain.com:8889/Stream_key` _(where `your-domain.com` is your domain or IP address)_, accept the security risk (**Advanced -> Proceed**), and then refresh the main page.
