@@ -32,13 +32,6 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON camsboard.* TO 'camsboard_user'@'localhos
 sudo mysql camsboard < /var/www/camsboard/deploy/schema.sql
 ```
 
-> **Дані для першого входу / Default First Login:**
->
-> - **Login:** `1234567891`
-> - **Динамічний пароль / Dynamic Code:** `1111` _(працює, коли в `.env` встановлено `AUTH_2FA_ENABLED=false` / works when `AUTH_2FA_ENABLED=false` is set in `.env`)_.
-> - Після першого входу змініть дані в профілі, налаштуйте сповіщення (Email / Telegram) та увімкніть `AUTH_2FA_ENABLED=true` у файлі `.env`.
-> - After the first login, update your profile details, configure notifications (Email / Telegram), and set `AUTH_2FA_ENABLED=true` in `.env`.
-
 ### 4. Налаштування конфігурації / Configuration Setup
 
 ```bash
@@ -255,6 +248,13 @@ sudo ufw status
 ```
 
 ### 15. Первинне налаштування в адмін-панелі / Initial Admin Panel Configuration
+
+> **Дані для першого входу / Default First Login:**
+>
+> - **Login:** `1234567891`
+> - **Динамічний пароль / Dynamic Code:** `1111` _(працює, коли в `.env` встановлено `AUTH_2FA_ENABLED=false` / works when `AUTH_2FA_ENABLED=false` is set in `.env`)_.
+> - Після першого входу змініть дані в профілі, налаштуйте сповіщення (Email / Telegram) та увімкніть `AUTH_2FA_ENABLED=true` у файлі `.env`.
+> - After the first login, update your profile details, configure notifications (Email / Telegram), and set `AUTH_2FA_ENABLED=true` in `.env`.
 
 1. Відкрийте у браузері адмін-панель: `https://your-domain.com/admin.php` _(або замініть `your-domain.com` на IP-адресу сервера)_ та увійдіть, використовуючи облікові дані з пункту 3. / Open the admin panel in your browser: `https://your-domain.com/admin.php` _(or replace `your-domain.com` with your server's IP address)_ and log in using the credentials from Step 3.
 2. Перейдіть до розділу **Меню -> Налаштування** та заповніть усі порожні поля вводу відповідно до параметрів вашого сервера. / Go to **Menu -> Settings** and fill in all empty input fields according to your server configuration.
