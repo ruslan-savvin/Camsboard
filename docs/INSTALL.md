@@ -256,7 +256,7 @@ sudo ufw status
 > - Після першого входу змініть дані в профілі, налаштуйте сповіщення (Email / Telegram) та увімкніть `AUTH_2FA_ENABLED=true` у файлі `.env`.
 > - After the first login, update your profile details, configure notifications (Email / Telegram), and set `AUTH_2FA_ENABLED=true` in `.env`.
 
-1. Відкрийте у браузері адмін-панель: `https://your-domain.com/admin.php` _(або замініть `your-domain.com` на IP-адресу сервера)_ та увійдіть, використовуючи облікові дані з пункту 3. / Open the admin panel in your browser: `https://your-domain.com/admin.php` _(or replace `your-domain.com` with your server's IP address)_ and log in using the credentials from Step 3.
+1. Відкрийте у браузері адмін-панель: `https://your-domain.com/admin.php` _(або замініть `your-domain.com` на IP-адресу сервера)_ та увійдіть, використовуючи дані для першого входу. / Open the admin panel in your browser: `https://your-domain.com/admin.php` _(or replace `your-domain.com` with your server's IP address)_ and log in using the default first login.
 2. Перейдіть до розділу **Меню -> Налаштування** та заповніть усі порожні поля вводу відповідно до параметрів вашого сервера. / Go to **Menu -> Settings** and fill in all empty input fields according to your server configuration.
 3. Перейдіть до розділу **Меню -> Довідники** та додайте новий **Stream key** _(вкажіть довільний набір символів без пробілів)_. / Go to **Menu -> Reference** and add a new **Stream key** _(enter any random string of characters without spaces)_.
 4. Налаштуйте вашу камеру або програму для трансляції для передачі відеопотоку на сервер за адресою: / Configure your camera or streaming software to push the video stream to the server using the following URL:
