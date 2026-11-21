@@ -190,27 +190,27 @@ CREATE TABLE `testers` (
 --
 -- Table structure for table `users`
 --
-
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `token` bigint unsigned NOT NULL,
-  `chatCod` json NOT NULL DEFAULT (json_object()),
   `pass` int NOT NULL DEFAULT '0',
   `id` int NOT NULL AUTO_INCREMENT,
-  `role` tinyint NOT NULL DEFAULT '0',
   `languageId` int NOT NULL DEFAULT '0',
   `isDelete` int NOT NULL DEFAULT '0',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `surname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telegram` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `viber` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_users_user` (`token`),
   KEY `fk_user_language` (`languageId`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`languageId`) REFERENCES `languages` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `check_min_token_length` CHECK ((`token` >= 1000000000)),
-  CONSTRAINT `chk_users_chat_cod_json` CHECK (json_valid(`chatCod`))
-) ENGINE=InnoDB AUTO_INCREMENT=415 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `check_min_token_length` CHECK ((`token` >= 1000000000))
+) ENGINE=InnoDB AUTO_INCREMENT=414 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -246,7 +246,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1234567891,'{\"email\": \"****@****.com\", \"viber\": \"*****\", \"telegram\": 1111}',0,1,2,1,0,'Name','Surname');
+INSERT INTO `users` VALUES (1234567891,0,1,1,0,'Name','Surname','','','');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
