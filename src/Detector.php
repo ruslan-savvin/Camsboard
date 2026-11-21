@@ -160,6 +160,15 @@ function sendTelegramMessage(string $imagePath, int $eventId, string $deviceName
         $dataTemp = ["message" => $file . " Event: " . $eventId . " Device: " . $deviceName . " " . $address, "telegramCod" => $telegramCod, "photo" => $imagePath];
         $gf->sendTelegramMessage($dataTemp);
     }
+
+    $viberCod = $chatCod["viber"] ?? "";
+    if ($viberCod !== "") {
+        $dataTemp = [
+            "message"  => "Event: " . $eventId . " Device: " . $deviceName . " " . $address,
+            "viberCod" => $viberCod
+        ];
+        $gf->sendViberMessage($dataTemp);
+    }
 }
 
 function drawDetections(string $imagePath, array $detections): bool

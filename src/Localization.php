@@ -32,17 +32,8 @@ class Localization
     private array $requestData = [];
 
     protected array $pluralMap = [
-        1 => [
-            "night"    => ["night", "nights"],
-            "nightGen" => ["night", "nights"],
-            "percent"  => ["percent", "percent"]
-        ],
-        3 => [
-            "night"    => ["ніч", "ночі", "ночей"],
-            "nightGen" => ["ночі", "ночей", "ночей"],
-            "percent"  => ["відсоток", "відсотки", "відсотків"]
-        ]
-
+        1 => [],
+        3 => []
     ];
 
     public function __construct(string $currentLanguage)
@@ -85,6 +76,10 @@ class Localization
         ];
         if (!empty($textKeys)) {
             $records = DataProvider::getInstance()->read($data);
+
+            /* if (!empty($records)) {
+                self::logUsedKeys($records);
+            }*/
         } else {
             $records = [];
         }
@@ -173,5 +168,57 @@ class Localization
             }
         }
         return $text;
+    }
+
+
+    public static function logUsedKeys(array $records): void
+    {
+        if (empty($records)) {
+            return;
+        }
+
+        $logFile = dirname(__DIR__) . '/used_localization_keys.json';
+        $fp = fopen($logFile, 'c+');
+        if ($fp && flock($fp, LOCK_EX)) {
+            $content = stream_get_contents($fp);
+            $existing = $content ? json_decode($content, true) : [];
+            if (!is_array($existing)) {
+                $existing = [];
+            }
+
+            foreach ($records as $key => $value) {
+                if (!isset($existing[$key]) || !is_array($existing[$key])) {
+                    $existing[$key] = [];
+                }
+
+                // Витягуємо всі текстові значення незалежно від глибини вкладеності buildMap
+                $texts = [];
+                if (is_array($value)) {
+                    array_walk_recursive($value, function ($item) use (&$texts) {
+                        if (is_string($item) && $item !== '') {
+                            $texts[] = $item;
+                        }
+                    });
+                } elseif (is_string($value) && $value !== '') {
+                    $texts[] = $value;
+                }
+
+                // Додаємо кожен переклад, якщо його ще немає в списку для цього ключа
+                foreach ($texts as $text) {
+                    if (!in_array($text, $existing[$key], true)) {
+                        $existing[$key][] = $text;
+                    }
+                }
+            }
+
+            ftruncate($fp, 0);
+            rewind($fp);
+            fwrite($fp, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            fflush($fp);
+            flock($fp, LOCK_UN);
+        }
+        if ($fp) {
+            fclose($fp);
+        }
     }
 }

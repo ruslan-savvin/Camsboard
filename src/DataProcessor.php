@@ -46,6 +46,11 @@ class DataProcessor
                 ReturnData::getInstance()->set("Table `$alias` is not available for public access", ReturnType::THROW_EXCEPTION, "❗ ", ReturnDirection::LOG);
         }
         $records = DataProvider::getInstance()->read($data);
+
+        /* if ($alias === "localization" && !empty($records)) {
+            Localization::logUsedKeys($records);
+        }*/
+
         unset($data["queryParams"]); // security: do not return the query structure                
         ReturnData::getInstance()->set($records, ReturnType::DATA, "", ReturnDirection::RETURNTOCLIENT);
     }

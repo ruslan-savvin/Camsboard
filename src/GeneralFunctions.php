@@ -65,6 +65,7 @@ class GeneralFunctions
 
     public function sendTelegramMessage(array $data)
     {
+
         $telegramCod = $data["telegramCod"];
         $attachment = $data["attachment"] ?? null;
         $photoPath = $data["photo"] ?? null;
