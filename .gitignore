@@ -21,3 +21,4 @@ node_modules/
 /storage/*
 !/storage/.gitkeep
 *.log
+.vscode/launch.json

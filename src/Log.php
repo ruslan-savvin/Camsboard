@@ -27,5 +27,6 @@ class Log
         $my_array = array_slice($my_array, 0, 50);
         $new_content = json_encode($my_array, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         file_put_contents($filename, $new_content);
+        @chmod($filename, 0666);
     }
 }
