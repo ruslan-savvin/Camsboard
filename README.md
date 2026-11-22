@@ -75,6 +75,8 @@ The system is built on a high-performance two-stage architecture: cameras push *
 ## Documentation
 
 - **[Installation & Deployment Guide](docs/INSTALL.md)** — step-by-step instructions for setting up the server, database, Python environment, MediaMTX, and background services.
+- **[Interface Screenshot 1](docs/screenshot1.png)** — preview of the CamsBoard web dashboard.
+- **[Interface Screenshot 2](docs/screenshot2.png)** — preview of the CamsBoard events and monitoring view.
 
 ---
 
