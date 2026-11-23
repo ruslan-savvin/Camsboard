@@ -31,7 +31,7 @@ CREATE TABLE `cookies` (
   UNIQUE KEY `idx_cookies_idCookies` (`idCookies`),
   KEY `fk_cookies_users` (`userId`),
   CONSTRAINT `fk_cookies_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=515 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `deviceEvents` (
   PRIMARY KEY (`id`),
   KEY `fk_events_camera` (`device`),
   CONSTRAINT `fk_events_camera` FOREIGN KEY (`device`) REFERENCES `devices` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6288 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +80,7 @@ CREATE TABLE `devices` (
   `sceneThreshold` decimal(4,3) unsigned NOT NULL DEFAULT '0.040',
   `fps` int unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +107,7 @@ CREATE TABLE `generalSettings` (
   `timerDetector` text,
   `timerTester` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `languages` (
   `isDelete` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `languageValue` (`languageCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,11 +142,13 @@ DROP TABLE IF EXISTS `localization`;
 CREATE TABLE `localization` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `textKey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `languageId` int NOT NULL DEFAULT '0',
+  `languageId` int NOT NULL,
   `textValue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_textkey_lang_id` (`textKey`,`languageId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1134 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `idx_textkey_lang_id` (`textKey`,`languageId`),
+  KEY `fk_localization_language` (`languageId`),
+  CONSTRAINT `fk_localization_language` FOREIGN KEY (`languageId`) REFERENCES `languages` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +166,7 @@ CREATE TABLE `tasks` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `fk_task_user` (`userId`,`task`) USING BTREE,
   CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +186,7 @@ CREATE TABLE `testers` (
   `errCount` int unsigned NOT NULL DEFAULT '0',
   `errTarget` int unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,7 +211,7 @@ CREATE TABLE `users` (
   KEY `fk_user_language` (`languageId`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`languageId`) REFERENCES `languages` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `check_min_token_length` CHECK ((`token` >= 1000000000))
-) ENGINE=InnoDB AUTO_INCREMENT=414 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -288,7 +290,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `generalSettings` WRITE;
 /*!40000 ALTER TABLE `generalSettings` DISABLE KEYS */;
-INSERT INTO `generalSettings` VALUES (1,'https://','ssl://','*****','*****@*****.com','*****','https://','*****','#sudo nano /etc/systemd/system/camsboard_device-@.service\n\n[Unit]\nDescription=FFmpeg Camera %i Stream Processor and Archiver1\nAfter=network.target\n\n[Service]\nType=simple\nUser=www-data\nGroup=www-data\n\nEnvironmentFile=/etc/default/camsboard_device-%i\n\nStandardOutput=journal\nStandardError=journal\nExecStartPre=/bin/bash -c \'rm -f /tmp/scene-%i.fifo && mkfifo -m 660 /tmp/scene-%i.fifo\'\n\nExecStart=/bin/bash -c \'/usr/bin/php /var/www/camsboard/src/FFmpegScene.php %i /tmp/scene-%i.fifo & \\\n    stdbuf -o0 -eL /usr/bin/ffmpeg \\\n    -rtsp_transport tcp \\\n    -timeout 5000000 \\\n    ${FFMPEG_INPUT_OPTS} \\\n    -an \\\n    -loglevel repeat+level+error \\\n    -i \"rtsp://127.0.0.1:8554/${STREAM_KEY}\" \\\n    -filter_complex \"[0:v]fps=${FPS},split=2[out1][v2]; [v2]select=gt(scene\\\\,${SCENE_THRESHOLD}),metadata=print:file=/tmp/scene-%i.fifo:direct=1[out2]\" \\\n    -map \"[out1]\" -q:v 1 -fps_mode vfr -f image2pipe -vcodec mjpeg - \\\n    -map \"[out2]\" -f null - \\\n    2> >(/usr/bin/php /var/www/camsboard/src/FFmpegStderr.php %i) \\\n    | /usr/bin/php /var/www/camsboard/src/FFmpegStdout.php %i\'\n\nRestart=always\nRestartSec=60s\n\n[Install]\nWantedBy=multi-user.target','#sudo nano /etc/systemd/system/camsboard_detect.service\n[Unit]\nDescription=Camsboard YOLO Memory Service\nAfter=network.target\n\n[Service]\nType=simple\nWorkingDirectory=/var/www/camsboard/src\nExecStart=/var/www/camsboard/venv/bin/python3 /var/www/camsboard/src/detect.py\nRestart=always\nRestartSec=60s\nNice=10\n\n[Install]\nWantedBy=multi-user.target','#sudo nano /etc/systemd/system/camsboard_timer@.service\n[Unit]\nDescription=Camsboard Executer for Task: %I\nAfter=network.target\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/php /var/www/camsboard/src/%I.php\nUser=root\nTimeoutStartSec=60s','#sudo nano /etc/systemd/system/cleaner.timer\n\n[Unit]\nDescription=Cleaner Timer\n\n[Timer]\nOnBootSec=30sec\nOnUnitActiveSec=1min\nAccuracySec=1ms\nUnit=camsboard_timer@Cleaner.service\n\n[Install]\nWantedBy=timers.target','#sudo nano /etc/systemd/system/copier.timer\n\n[Unit]\nDescription=Copier Timer\n\n[Timer]\nOnBootSec=5sec\nOnUnitActiveSec=15sec\nAccuracySec=1ms\nUnit=camsboard_timer@Copier.service\n\n[Install]\nWantedBy=timers.target','#sudo nano /etc/systemd/system/detector.timer\n\n[Unit]\nDescription=Detector Timer\n\n[Timer]\nOnBootSec=10sec\nOnUnitActiveSec=15sec\nAccuracySec=1ms\nUnit=camsboard_timer@Detector.service\n\n[Install]\nWantedBy=timers.target','#sudo nano /etc/systemd/system/tester.timer\n\n[Unit]\nDescription=Tester Timer\n\n[Timer]\nOnBootSec=10sec\nOnUnitActiveSec=10sec\nAccuracySec=1ms\nUnit=camsboard_timer@Tester.service\n\n[Install]\nWantedBy=timers.target');
+INSERT INTO `generalSettings` VALUES (1,'https://','ssl://','','','','https://','','#sudo nano /etc/systemd/system/camsboard_device-@.service\n\n[Unit]\nDescription=FFmpeg Camera %i Stream Processor and Archiver1\nAfter=network.target\n\n[Service]\nType=simple\nUser=www-data\nGroup=www-data\n\nEnvironmentFile=/etc/default/camsboard_device-%i\n\nStandardOutput=journal\nStandardError=journal\nExecStartPre=/bin/bash -c \'rm -f /tmp/scene-%i.fifo && mkfifo -m 660 /tmp/scene-%i.fifo\'\n\nExecStart=/bin/bash -c \'/usr/bin/php /var/www/camsboard/src/FFmpegScene.php %i /tmp/scene-%i.fifo & \\\n    stdbuf -o0 -eL /usr/bin/ffmpeg \\\n    -rtsp_transport tcp \\\n    -timeout 5000000 \\\n    ${FFMPEG_INPUT_OPTS} \\\n    -an \\\n    -loglevel repeat+level+error \\\n    -i \"rtsp://127.0.0.1:8554/${STREAM_KEY}\" \\\n    -filter_complex \"[0:v]fps=${FPS},split=2[out1][v2]; [v2]select=gt(scene\\\\,${SCENE_THRESHOLD}),metadata=print:file=/tmp/scene-%i.fifo:direct=1[out2]\" \\\n    -map \"[out1]\" -q:v 1 -fps_mode vfr -f image2pipe -vcodec mjpeg - \\\n    -map \"[out2]\" -f null - \\\n    2> >(/usr/bin/php /var/www/camsboard/src/FFmpegStderr.php %i) \\\n    | /usr/bin/php /var/www/camsboard/src/FFmpegStdout.php %i\'\n\nRestart=always\nRestartSec=60s\n\n[Install]\nWantedBy=multi-user.target','#sudo nano /etc/systemd/system/camsboard_detect.service\n[Unit]\nDescription=Camsboard YOLO Memory Service\nAfter=network.target\n\n[Service]\nType=simple\nWorkingDirectory=/var/www/camsboard/src\nExecStart=/var/www/camsboard/venv/bin/python3 /var/www/camsboard/src/detect.py\nRestart=always\nRestartSec=60s\nNice=10\n\n[Install]\nWantedBy=multi-user.target','#sudo nano /etc/systemd/system/camsboard_timer@.service\n[Unit]\nDescription=Camsboard Executer for Task: %I\nAfter=network.target\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/php /var/www/camsboard/src/%I.php\nUser=root\nTimeoutStartSec=60s','#sudo nano /etc/systemd/system/cleaner.timer\n\n[Unit]\nDescription=Cleaner Timer\n\n[Timer]\nOnBootSec=30sec\nOnUnitActiveSec=1min\nAccuracySec=1ms\nUnit=camsboard_timer@Cleaner.service\n\n[Install]\nWantedBy=timers.target','#sudo nano /etc/systemd/system/copier.timer\n\n[Unit]\nDescription=Copier Timer\n\n[Timer]\nOnBootSec=5sec\nOnUnitActiveSec=15sec\nAccuracySec=1ms\nUnit=camsboard_timer@Copier.service\n\n[Install]\nWantedBy=timers.target','#sudo nano /etc/systemd/system/detector.timer\n\n[Unit]\nDescription=Detector Timer\n\n[Timer]\nOnBootSec=10sec\nOnUnitActiveSec=15sec\nAccuracySec=1ms\nUnit=camsboard_timer@Detector.service\n\n[Install]\nWantedBy=timers.target','#sudo nano /etc/systemd/system/tester.timer\n\n[Unit]\nDescription=Tester Timer\n\n[Timer]\nOnBootSec=10sec\nOnUnitActiveSec=10sec\nAccuracySec=1ms\nUnit=camsboard_timer@Tester.service\n\n[Install]\nWantedBy=timers.target');
 /*!40000 ALTER TABLE `generalSettings` ENABLE KEYS */;
 UNLOCK TABLES;
 
