@@ -40,13 +40,14 @@
 /**
  * Write to database function (Insert/Update) with condition
  * @example
- * $actionData = ["insert" => ["column_name_2" => $value]];
+ * $actionData = ["0" => ["column_name_2" => $value]];
  * $condition = [
  *     "changed" => 5, 
  *     "where" => "WHERE main_table.column_name_1 IN (" . $values . ")"
  * ];
  * $data = [
  *     "table" => "main_table",
+ *     "index" => "uniq_index_column_name_1",
  *     "queryData" => [
  *         "0" => array_merge($actionData, $condition)
  *     ]
