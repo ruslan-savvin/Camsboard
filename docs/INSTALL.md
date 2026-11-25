@@ -268,3 +268,13 @@ sudo ufw status
    _(замініть `your-domain.com` на ваш домен або IP-адресу, а `Stream_key` — на створений ключ)_. / _(replace `your-domain.com` with your domain or IP address, and `Stream_key` with your created key)_.
 
 5. **Важливо (для самопідписаних SSL-сертифікатів):** якщо ви використовуєте самопідписані ключі, вікно перегляду відео буде заблоковане попередженням безпеки браузера. Для розблокування відкрийте нову вкладку в браузері, перейдіть за адресою `https://your-domain.com:8889/Stream_key` _(де `your-domain.com` — ваш домен або IP-адреса)_ та підтвердіть довіру до сертифіката (натисніть **Додатково -> Перейти на сайт**), після чого оновіть основну сторінку. / **Important (for self-signed SSL certificates):** If you are using self-signed certificates, the video player window will be blocked by a browser security warning. To unblock it, open a new browser tab, navigate to `https://your-domain.com:8889/Stream_key` _(where `your-domain.com` is your domain or IP address)_, accept the security risk (**Advanced -> Proceed**), and then refresh the main page.
+
+### 16. Налаштування часового поясу сервера та PHP / Server and PHP Timezone Configuration
+
+1. Встановіть системний часовий пояс на сервері Ubuntu та пропишіть його у конфігураційні файли PHP _(за потреби замініть `Europe/Kyiv` на ваш регіон)_: / Set the system timezone on your Ubuntu server and apply it to the PHP configuration files _(replace `Europe/Kyiv` with your region if needed)_:
+
+   ```bash
+   sudo timedatectl set-timezone Europe/Kyiv
+   sudo sed -i 's|^;\?date\.timezone =.*|date.timezone = "Europe/Kyiv"|g' /etc/php/*/apache2/php.ini /etc/php/*/cli/php.ini
+   ```
+
